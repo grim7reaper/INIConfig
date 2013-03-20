@@ -231,15 +231,15 @@ class TestINIConfig < Test::Unit::TestCase
 
     assert_equal('foo', config['Default', 'var1'])
     assert_equal('a"b"c', config['Default', 'var2'])
-    assert_equal("this is a \nmultiline value with a simple ' quote ",
+    assert_equal("this is a \nmultiline value with a single ' quote ",
                  config['Default', 'var3'])
     assert_equal('with escaped double quote \\"',
                  config['Default', 'var4'])
   end
 
-  def test_read_simple_quote
+  def test_read_single_quote
     config = INIConfig.new()
-    config.load('test/data/simple_quote.ini')
+    config.load('test/data/single_quote.ini')
     assert(config.has_section?('Default'))
     assert_equal(1, config.sections().length)
 
@@ -253,7 +253,7 @@ class TestINIConfig < Test::Unit::TestCase
     assert_equal("x'y'z", config['Default', 'var2'])
     assert_equal("another \nmultiline value with a \" double quote\n",
                  config['Default', 'var3'])
-    assert_equal("with escaped simple quote \\'",
+    assert_equal("with escaped single quote \\'",
                  config['Default', 'var4'])
   end
 
