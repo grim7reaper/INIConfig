@@ -169,7 +169,7 @@ class INIConfig
         str << option.to_s() << @delimiter << value.to_s() << "\n"
       end
     end
-    str
+    return str
   end
 
   def load(path, encoding = Encoding.default_external())
@@ -214,6 +214,16 @@ class INIConfig
 
 private
 
+  # Parses the option value.
+  #
+  # * *Args*    :
+  #   - +value+ -> current value of the option.
+  #   - +iterator+ -> iterator on the lines.
+  # * *Returns* :
+  #   - the option value.
+  # * *Raises* :
+  #   - +INIError+ -> if no matching quotation mark is found before the end of
+  #   the file.
   def parse_quoted_value(value, iterator)
     quoted_value = ''
     quote = value[0] # Extract the quoting character.
@@ -236,11 +246,22 @@ private
     # Unescape the escaped quotes.
     quoted_value.gsub!(/\\#{quote}/, quote)
     # Unescape the escaped escape character (\).
-    quoted_value.gsub(/\\\\/, '\\')
+    quoted_value.gsub!(/\\\\/, '\\')
+    return quoted_value
   rescue StopIteration => err # We reach the end of the file.
     raise INIError.new('Un-terminated quoted field')
   end
 
+  # Parses the option value.
+  #
+  # * *Args*    :
+  #   - +value+ -> current value of the option.
+  #   - +iterator+ -> iterator on the lines.
+  # * *Returns* :
+  #   - the option value.
+  # * *Raises* :
+  #   - +INIError+ -> if the multiline value does not end before the end of the
+  #   file.
   def parse_unquoted_value(value, iterator)
     full_value = ''
     # Remove trailing spaces and inline comments.
