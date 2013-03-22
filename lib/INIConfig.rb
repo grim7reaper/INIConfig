@@ -172,6 +172,13 @@ class INIConfig
     return str
   end
 
+  # Loads the content of an existing configuration file.
+  #
+  # * *Args*    :
+  #   - +path+ -> file path.
+  #   - +encoding+ -> the encoding to be used on the file.
+  # * *Raises* :
+  #   - +INIError+ -> if the INI-file is malformed.
   def load(path, encoding = Encoding.default_external())
     lines = IO.readlines(path, :encoding => encoding.to_s(), :mode => 'rb')
     section_name = nil
