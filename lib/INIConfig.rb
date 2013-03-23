@@ -202,7 +202,11 @@ class INIConfig
     lineno = 0
     it = lines.each()
     loop do
-      line = it.next()
+      # I make the assumption that configuration files are quite short in
+      # practice, so it is not worth to change the encoding of all the
+      # patterns/strings (instead of change the encoding of each lines) to
+      # increase the speed. The gain will be insignificant.
+      line = it.next().encode('UTF-8')
       lineno += 1
       if line !~ @comment_pattern # If the line is not a comment.
         match = @section_pattern.match(line)
