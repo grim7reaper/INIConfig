@@ -207,8 +207,9 @@ class INIConfig
       if line !~ @comment_pattern # If the line is not a comment.
         match = @section_pattern.match(line)
         if match # If the line is a section declaration.
-          section_name = match[1]
+          section_name = match[1].to_sym()
           add_section(section_name)
+          next
         end
         match = @option_pattern.match(line)
         if match # If the line is an option declaration.
@@ -219,7 +220,14 @@ class INIConfig
           else
             value = parse_unquoted_value(value, it)
           end
-          add_option(section_name, name, value)
+          add_option(section_name, name.to_sym(), value)
+          next
+        end
+        if line !~ /^\s*$/ # If the line is not an "empty" line.
+          # If we arrive here that means the current line is not a comment, not
+          # a section declaration, not an option declaration and not an "empty"
+          # line.
+          fail INIError.new("Cannot parse '#{line.chomp()}'")
         end
       end
     end
