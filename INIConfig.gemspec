@@ -6,11 +6,13 @@ Gem::Specification.new do |spec|
   spec.license     = 'BSD3'
   spec.description = <<-eos
                         This gem implements a file parser for INI-like
-                        configuration files. It can be used to write Ruby scripts
-                        which can be customized easily.
+                        configuration files. It can be used to write Ruby
+                        scripts which can be customized easily.
                      eos
   spec.authors     = ['Sylvain Laperche']
   spec.email       = 'sylvain.laperche@gmx.fr'
   spec.files       = ['lib/INIConfig.rb']
   spec.test_files  = ['test/ts_INIConfig.rb']
+  spec.rdoc_options << '--title' << 'INIConfig' <<
+                       '--main'  << 'README.md' << '--line-numbers'
 end
