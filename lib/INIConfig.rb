@@ -93,6 +93,23 @@ class INIConfig
     end
   end
 
+  # Set the value of the option.
+  #
+  # * *Args*    :
+  #   - +section+ -> section name.
+  #   - +option+ -> option name.
+  #   - +value+ -> new value.
+  # * *Raises* :
+  #   - +INIError+ -> if the section and/or the item does not exist.
+  def []=(section, option, value)
+    if has_option?(section, option)
+      @conf[section][option] = value
+    else
+      fail INIError.new("Option '#{option}' does not exist " <<
+                        "in section '#{section}'.")
+    end
+  end
+
   # Adds a section to the configuration.
   #
   # * *Args*    :
