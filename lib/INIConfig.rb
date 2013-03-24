@@ -14,7 +14,7 @@ class INIConfig
   # Returns a new, empty configuration.
   #
   # * *Args*    :
-  #   - +delimiter+ -> name of the section inside which to search the options.
+  #   - +delimiter+ -> the option/value delimiter.
   def initialize(delimiter = '=')
     @conf = {}
     @delimiter = delimiter
@@ -34,7 +34,7 @@ class INIConfig
   # Returns the list of options in the specified section.
   #
   # * *Args*    :
-  #   - +section+ -> name of the section inside which to search the options.
+  #   - +section+ -> section name.
   # * *Returns* :
   #   - the list of options in the specified section.
   # * *Raises* :
@@ -60,9 +60,8 @@ class INIConfig
   # Tests the existence of an option in a section of the configuration.
   #
   # * *Args*    :
-  #   - +section+ -> name of the section inside which to test the existence of
-  #   the option.
-  #   - +option+ -> option name.
+  #   - +section+ -> section name.
+  #   - +option+  -> option name.
   # * *Returns* :
   #   - true if the option exist in the section, otherwise false.
   # * *Raises* :
@@ -79,7 +78,7 @@ class INIConfig
   #
   # * *Args*    :
   #   - +section+ -> section name.
-  #   - +option+ -> option name.
+  #   - +option+  -> option name.
   # * *Returns* :
   #   - the value associated to the option.
   # * *Raises* :
@@ -97,8 +96,8 @@ class INIConfig
   #
   # * *Args*    :
   #   - +section+ -> section name.
-  #   - +option+ -> option name.
-  #   - +value+ -> new value.
+  #   - +option+  -> option name.
+  #   - +value+   -> new value.
   # * *Raises* :
   #   - +INIError+ -> if the section and/or the item does not exist.
   def []=(section, option, value)
@@ -127,12 +126,12 @@ class INIConfig
   # Adds an option to the section of a configuration.
   #
   # * *Args*    :
-  #   - +section+ -> name of the section inside which to create the option.
-  #   - +option+ -> option name.
-  #   - +value+ -> option value.
+  #   - +section+ -> section name.
+  #   - +option+  -> option name.
+  #   - +value+   -> option value.
   # * *Raises* :
   #   - +INIError+ -> if the section does not exist or if the section
-  #   already contains an option with the same name
+  #   already contains an option with the same name.
   def add_option(section, option, value)
     if has_option?(section, option)
       fail INIError.new("Option '#{option}' already exist " <<
@@ -161,7 +160,7 @@ class INIConfig
   #
   # * *Args*    :
   #   - +section+ -> name of the section inside which to delete the option.
-  #   - +option+ -> name of the option to delete.
+  #   - +option+  -> name of the option to delete.
   # * *Raises* :
   #   - +INIError+ -> if the section does not exist and/or if the option does
   #   not exist
@@ -192,7 +191,7 @@ class INIConfig
   # Loads the content of an existing configuration file.
   #
   # * *Args*    :
-  #   - +path+ -> file path.
+  #   - +path+     -> file path.
   #   - +encoding+ -> the encoding to be used on the file.
   # * *Raises* :
   #   - +INIError+ -> if the INI-file is malformed.
@@ -208,15 +207,15 @@ class INIConfig
       # increase the speed. The gain will be insignificant.
       line = it.next().encode('UTF-8')
       lineno += 1
-      if line !~ @comment_pattern # If the line is not a comment.
+      if line !~ @comment_pattern
         match = @section_pattern.match(line)
-        if match # If the line is a section declaration.
+        if match
           section_name = match[1].to_sym()
           add_section(section_name)
           next
         end
         match = @option_pattern.match(line)
-        if match # If the line is an option declaration.
+        if match
           name  = match[1].lstrip()
           value = match[2]
           if value.start_with?('"') || value.start_with?("'")
@@ -242,7 +241,7 @@ class INIConfig
   # Writes a configuration object into a file.
   #
   # * *Args*    :
-  #   - +path+ -> file path.
+  #   - +path+     -> file path.
   #   - +encoding+ -> the encoding to be used on the file.
   def save(path, encoding = Encoding.default_external())
     IO.write(path, to_s(), :encoding => encoding.to_s())
@@ -253,7 +252,7 @@ private
   # Parses the option value.
   #
   # * *Args*    :
-  #   - +value+ -> current value of the option.
+  #   - +value+    -> current value of the option.
   #   - +iterator+ -> iterator on the lines.
   # * *Returns* :
   #   - the option value.
@@ -291,7 +290,7 @@ private
   # Parses the option value.
   #
   # * *Args*    :
-  #   - +value+ -> current value of the option.
+  #   - +value+    -> current value of the option.
   #   - +iterator+ -> iterator on the lines.
   # * *Returns* :
   #   - the option value.
