@@ -200,6 +200,18 @@ class TestINIConfig < Test::Unit::TestCase
     assert_equal('config', config['2) Output', '名字'])
   end
 
+  def test_read_utf16
+    config = INIConfig.new()
+    config.load('test/data/utf16.ini', 'UTF-16LE', true)
+    assert(config.has_section?(:汉语))
+    assert_equal(1, config.sections().length)
+
+    assert(config.has_option?(:汉语, :你好))
+    assert_equal(1, config.options(:汉语).length)
+
+    assert_equal('hello', config[:汉语, :你好])
+  end
+
   def test_read_inline_comment
     config = INIConfig.new()
     config.load('test/data/inline.ini')
