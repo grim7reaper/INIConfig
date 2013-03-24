@@ -191,11 +191,12 @@ class INIConfig
   # Loads the content of an existing configuration file.
   #
   # * *Args*    :
-  #   - +path+     -> file path.
-  #   - +encoding+ -> the encoding to be used on the file.
+  #   - +path+      -> file path.
+  #   - +encoding+  -> the encoding to be used on the file.
+  #   - +to_symbol+ -> convert section and option names to symbol?
   # * *Raises* :
   #   - +INIError+ -> if the INI-file is malformed.
-  def load(path, encoding = Encoding.default_external())
+  def load(path, encoding = Encoding.default_external(), to_symbol = false)
     lines = IO.readlines(path, :encoding => encoding.to_s(), :mode => 'rb')
     section_name = nil
     lineno = 0
@@ -210,7 +211,7 @@ class INIConfig
       if line !~ @comment_pattern
         match = @section_pattern.match(line)
         if match
-          section_name = match[1].to_sym()
+          section_name = to_symbol ? match[1].to_sym() : match[1]
           add_section(section_name)
           next
         end
@@ -223,7 +224,7 @@ class INIConfig
           else
             value = parse_unquoted_value(value, it)
           end
-          add_option(section_name, name.to_sym(), value)
+          add_option(section_name, to_symbol ? name.to_sym() : name, value)
           next
         end
         if line !~ /^\s*$/ # If the line is not an "empty" line.
