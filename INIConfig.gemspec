@@ -12,6 +12,5 @@ Gem::Specification.new do |spec|
   spec.authors     = ['Sylvain Laperche']
   spec.email       = 'sylvain.laperche@gmx.fr'
   spec.files       = ['lib/INIConfig.rb']
-  spec.test_files  = ['test/ts_INIConfig.rb']
   spec.rdoc_options << '--title' << 'INIConfig'
 end
