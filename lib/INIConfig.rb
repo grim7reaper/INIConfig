@@ -9,7 +9,7 @@ end
 # configuration files.
 #
 # It provides the necessary methods to deal with the configuration files. It
-# allows to read existing files as well as creating new ones
+# allows the reading of existing files as well as creating new ones.
 class INIConfig
   # Returns a new, empty configuration.
   #

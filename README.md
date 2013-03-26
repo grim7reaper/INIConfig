@@ -27,10 +27,10 @@ Example
 Description
 -----------
 
-The INI format was introduced by Microsoft with the Windows 1.0 in 1985. The use
-of this file format spreads among software running on this operating system, and
+The INI format was introduced by Microsoft with Windows 1.0 in 1985. The use
+of this file format spread among softwares running on this operating system and
 later on software running on other operating systems, such as Unix-like.
-It is used to store configuration data, it is less complex and more readable
+It is used to store configuration data in a form less complex and more readable
 (but also less powerful) than XML files.
 
 More information about INI files can be found on the [Wikipedia Page](http://en.wikipedia.org/wiki/INI_file).
@@ -41,7 +41,7 @@ Features
 
 - Save/Load file in any encoding supported by Ruby.
 - No restriction in the choice of the option/value delimiter.
-- Permissive parser
+- Permissive parser.
 
 
 Implementation
@@ -52,8 +52,8 @@ the **INIConfig** gem when parsing INI files.
 
 ### Global Properties
 
-Right now, the global properties are not supported. All options should be
-contained inside a section.
+Right now, global properties are not supported. All options should remain
+inside a section.
 
 ### Duplicate Options
 
@@ -72,7 +72,7 @@ sections.
 The comment character can be either a semicolon *;* or a number sign *#*. The
 comment character can appear anywhere on a line including at the end of a
 option/value pair declaration. If you wish to use a comment character in your
-value then you will need put the value in quotations (simple or double).
+value then you will need to use quotation signs (simple or double).
 
     [Default]
     var1 = foo  # a comment
