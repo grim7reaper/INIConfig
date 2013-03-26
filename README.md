@@ -30,7 +30,6 @@ Description
 The INI format was introduced by Microsoft with the Windows 1.0 in 1985. The use
 of this file format spreads among software running on this operating system, and
 later on software running on other operating systems, such as Unix-like.
-It is used.
 It is used to store configuration data, it is less complex and more readable
 (but also less powerful) than XML files.
 

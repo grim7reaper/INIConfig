@@ -9,7 +9,7 @@ end
 # configuration files.
 #
 # It provides the necessary methods to deal with the configuration files. It
-# allows read existing file as well creating new.
+# allows to read existing files as well as creating new ones
 class INIConfig
   # Returns a new, empty configuration.
   #
@@ -114,7 +114,7 @@ class INIConfig
   # * *Args*    :
   #   - +section+ -> section name.
   # * *Raises* :
-  #   - +INIError+ -> if the section already exist.
+  #   - +INIError+ -> if the section already exists.
   def add_section(section)
     if has_section?(section)
       fail INIError.new("Section '#{section}' already exist.")
@@ -159,7 +159,7 @@ class INIConfig
   # Removes an option from a section of a configuration.
   #
   # * *Args*    :
-  #   - +section+ -> name of the section inside which to delete the option.
+  #   - +section+ -> name of the section containing the option to be deleted.
   #   - +option+  -> name of the option to delete.
   # * *Raises* :
   #   - +INIError+ -> if the section does not exist and/or if the option does
@@ -204,7 +204,7 @@ class INIConfig
     loop do
       # I make the assumption that configuration files are quite short in
       # practice, so it is not worth to change the encoding of all the
-      # patterns/strings (instead of change the encoding of each lines) to
+      # patterns/strings ((instead of changing the encoding of each lines) to
       # increase the speed. The gain will be insignificant.
       line = it.next().encode('UTF-8')
       lineno += 1
@@ -228,8 +228,8 @@ class INIConfig
           next
         end
         if line !~ /^\s*$/ # If the line is not an "empty" line.
-          # If we arrive here that means the current line is not a comment, not
-          # a section declaration, not an option declaration and not an "empty"
+          # If we arrive here that means the current line is neither a comment,
+          # nor a section declaration, nor an option declaration, nor an "empty"
           # line.
           fail INIError.new("Cannot parse '#{line.chomp()}'")
         end
