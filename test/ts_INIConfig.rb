@@ -230,6 +230,24 @@ class TestINIConfig < Test::Unit::TestCase
     assert_equal('not a #comment', config['Default', 'var4'])
   end
 
+  def test_read_as_symbol
+    config = INIConfig.new()
+    config.load('test/data/inline.ini', 'UTF-8', true)
+    assert(config.has_section?(:Default))
+    assert_equal(1, config.sections().length)
+
+    assert(config.has_option?(:Default, :var1))
+    assert(config.has_option?(:Default, :var2))
+    assert(config.has_option?(:Default, :var3))
+    assert(config.has_option?(:Default, :var4))
+    assert_equal(4, config.options(:Default).length)
+
+    assert_equal('foo', config[:Default, :var1])
+    assert_equal('bar', config[:Default, :var2])
+    assert_equal('not a #comment', config[:Default, :var3])
+    assert_equal('not a #comment', config[:Default, :var4])
+  end
+
   def test_read_double_quote
     config = INIConfig.new()
     config.load('test/data/double_quote.ini')
@@ -316,8 +334,36 @@ class TestINIConfig < Test::Unit::TestCase
     end
   end
 
+  def test_read_default_section
+    config = INIConfig.new()
+    config.load('test/data/default_section.ini')
+    assert(config.has_section?('Default'))
+    assert_equal(1, config.sections().length)
+
+    assert(config.has_option?('Default', 'foo'))
+    assert(config.has_option?('Default', 'baz'))
+    assert_equal(2, config.options('Default').length)
+
+    assert_equal('bar', config['Default', 'foo'])
+    assert_equal('qux', config['Default', 'baz'])
+  end
+
+  def test_read_custom_default_section
+    config = INIConfig.new(default: 'Main')
+    config.load('test/data/default_section.ini')
+    assert(config.has_section?('Main'))
+    assert_equal(1, config.sections().length)
+
+    assert(config.has_option?('Main', 'foo'))
+    assert(config.has_option?('Main', 'baz'))
+    assert_equal(2, config.options('Main').length)
+
+    assert_equal('bar', config['Main', 'foo'])
+    assert_equal('qux', config['Main', 'baz'])
+  end
+
   def test_to_s_OK
-    config = INIConfig.new(':')
+    config = INIConfig.new(delimiter:':')
     assert_equal('', config.to_s())
 
     config.add_section(:Default)

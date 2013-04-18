@@ -14,13 +14,17 @@ class INIConfig
   # Returns a new, empty configuration.
   #
   # * *Args*    :
-  #   - +delimiter+ -> the option/value delimiter.
-  def initialize(delimiter = '=')
-    @conf = {}
-    @delimiter = delimiter
+  #   - +opts+ -> the hash of options.
+  #               - :comment -> the option/value delimiter.
+  #                 :default -> name of the default section.
+  def initialize(opts = {})
+    @delimiter = opts.fetch(:delimiter, '=')
+    @default_section = opts.fetch(:default, 'Default')
     @comment_pattern = /^\s*(#|;).*$/
     @section_pattern = /\[(.+?)\]/
     @option_pattern  = /^(.+?)\s*#{Regexp.escape(@delimiter)}\s*(.+)$/
+
+    @conf = {}
   end
 
   # Returns the list of sections.
@@ -223,6 +227,10 @@ class INIConfig
             value = parse_quoted_value(value, it)
           else
             value = parse_unquoted_value(value, it)
+          end
+          unless section_name
+            section_name = @default_section
+            add_section(section_name)
           end
           add_option(section_name, to_symbol ? name.to_sym() : name, value)
           next

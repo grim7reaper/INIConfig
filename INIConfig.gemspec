@@ -1,7 +1,7 @@
 Gem::Specification.new do |spec|
   spec.name        = 'INIConfig'
-  spec.version     = '1.0.0'
-  spec.date        = '2013-03-23'
+  spec.version     = '2.0.0'
+  spec.date        = '2013-04-18'
   spec.summary     = 'A file parser for INI-like configuration files'
   spec.license     = 'BSD3'
   spec.homepage    = 'http://projects.gw-computing.net/projects/iniconfig/'
