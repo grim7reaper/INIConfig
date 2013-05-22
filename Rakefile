@@ -7,4 +7,3 @@ Rake::TestTask.new do |test|
     test.test_files = FileList['test/ts_INIConfig.rb']
     test.verbose = true
 end
-

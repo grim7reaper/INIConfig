@@ -15,8 +15,8 @@ class INIConfig
   #
   # * *Args*    :
   #   - +opts+ -> the hash of options.
-  #               - :comment -> the option/value delimiter.
-  #                 :default -> name of the default section.
+  #     [comment] the option/value delimiter.
+  #     [default] name of the default section.
   def initialize(opts = {})
     @delimiter = opts.fetch(:delimiter, '=')
     @default_section = opts.fetch(:default, 'Default')
