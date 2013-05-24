@@ -108,7 +108,8 @@ These escape sequences will be applied only to quoted values.
 
 == Install
 
-    gem install INIConfig
+    $ gem build INIConfig.gemspec
+    $ gem install INIConfig-X.Y.Z.gem
 
 
 == Testing
