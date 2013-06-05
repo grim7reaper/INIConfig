@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name        = 'INIConfig'
-  spec.version     = '2.0.1'
+  spec.version     = '2.0.2'
   spec.date        = '2013-04-18'
   spec.summary     = 'A file parser for INI-like configuration files'
   spec.license     = 'BSD3'

@@ -372,5 +372,31 @@ class TestINIConfig < Test::Unit::TestCase
     config.add_option(:Default, :foo, 42)
     assert_equal("[Default]\nfoo:42\n", config.to_s())
   end
+
+  def test_whitespace_value
+    config = INIConfig.new()
+    config.add_section(:Default)
+    config.add_option(:Default, :space, ' ')
+    config.add_option(:Default, :tab  , "\t")
+    config.add_option(:Default, :mix  , "   \t   ")
+    config.save('test/data/tmp.ini')
+
+    begin
+      config = INIConfig.new()
+      config.load('test/data/tmp.ini')
+      assert(config.has_section?('Default'))
+      assert_equal(1, config.sections().length)
+      assert(config.has_option?('Default', 'space'))
+      assert(config.has_option?('Default', 'tab'))
+      assert(config.has_option?('Default', 'mix'))
+      assert_equal(3, config.options('Default').length)
+      assert_equal(' '       , config['Default', 'space'])
+      assert_equal("\t"      , config['Default', 'tab'])
+      assert_equal("   \t   ", config['Default', 'mix'])
+    ensure
+      File.delete('test/data/tmp.ini')
+    end
+
+  end
 end
 

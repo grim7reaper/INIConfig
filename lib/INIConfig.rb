@@ -186,7 +186,10 @@ class INIConfig
     @conf.each_key() do |section|
       str << '[' << section.to_s() << "]\n"
       @conf[section].each() do |option, value|
-        str << option.to_s() << @delimiter << value.to_s() << "\n"
+        val = value.to_s()
+        # If the value is only whitespaces, quote it.
+        val = '"' + val + '"' if val.strip.empty?
+        str << option.to_s() << @delimiter << val << "\n"
       end
     end
     return str
