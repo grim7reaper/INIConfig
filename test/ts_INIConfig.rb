@@ -396,7 +396,28 @@ class TestINIConfig < Test::Unit::TestCase
     ensure
       File.delete('test/data/tmp.ini')
     end
+  end
 
+  def test_comment_like_value
+    config = INIConfig.new()
+    config.add_section(:Default)
+    config.add_option(:Default, :semicolon, ';')
+    config.add_option(:Default, :sharp    , '#')
+    config.save('test/data/tmp.ini')
+
+    begin
+      config = INIConfig.new()
+      config.load('test/data/tmp.ini')
+      assert(config.has_section?('Default'))
+      assert_equal(1, config.sections().length)
+      assert(config.has_option?('Default', 'semicolon'))
+      assert(config.has_option?('Default', 'sharp'))
+      assert_equal(2, config.options('Default').length)
+      assert_equal(';'       , config['Default', 'semicolon'])
+      assert_equal('#'      , config['Default', 'sharp'])
+    ensure
+      File.delete('test/data/tmp.ini')
+    end
   end
 end
 

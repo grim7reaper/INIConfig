@@ -187,8 +187,8 @@ class INIConfig
       str << '[' << section.to_s() << "]\n"
       @conf[section].each() do |option, value|
         val = value.to_s()
-        # If the value is only whitespaces, quote it.
-        val = '"' + val + '"' if val.strip.empty?
+        # If the value is only whitespaces or begin like a comment, quote it.
+        val = '"' + val + '"' if val.strip.empty? || val =~ /^(;|#)/
         str << option.to_s() << @delimiter << val << "\n"
       end
     end
