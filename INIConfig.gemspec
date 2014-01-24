@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
                         scripts which can be customized easily.
                      eos
   spec.author        = 'Sylvain Laperche'
-  spec.email         = 'sylvain.laperche@gmx.fr'
+  spec.email         = 'sylvain.laperche@gmail.com'
   spec.require_paths = [ 'lib' ]
   spec.files         = `git ls-files`.split("\n") - [ '.gitignore', __FILE__ ]
   spec.test_files    = [ 'test/ts_INIConfig.rb' ]
