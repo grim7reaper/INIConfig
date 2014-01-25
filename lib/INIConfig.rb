@@ -1,5 +1,8 @@
-# encoding: utf-8
+#encoding: utf-8
 
+# Copyright (c) 2013-2014, Sylvain LAPERCHE
+# All rights reserved.
+# License: BSD 3-Clause (http://opensource.org/licenses/BSD-3-Clause)
 
 # This class signals that an INI-exception of some sort has occurred.
 class INIError < StandardError

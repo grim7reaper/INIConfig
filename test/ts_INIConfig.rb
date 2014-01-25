@@ -1,10 +1,11 @@
-# encoding: utf-8
+#encoding: utf-8
 
+# Copyright (c) 2013-2014, Sylvain LAPERCHE
+# All rights reserved.
+# License: BSD 3-Clause (http://opensource.org/licenses/BSD-3-Clause)
 
 require 'test/unit'
-
 require 'INIConfig'
-
 
 class TestINIConfig < Test::Unit::TestCase
   def test_sections_OK
@@ -420,4 +421,3 @@ class TestINIConfig < Test::Unit::TestCase
     end
   end
 end
-
