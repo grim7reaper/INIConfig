@@ -5,18 +5,17 @@
 class INIError < StandardError
 end
 
-# This class provides a parser, in pure Ruby, for the INI-like
-# configuration files.
+# This class provides a parser, in pure Ruby, for the INI-like configuration
+# files.
 #
 # It provides the necessary methods to deal with the configuration files. It
 # allows the reading of existing files as well as creating new ones.
 class INIConfig
   # Returns a new, empty configuration.
   #
-  # * *Args*    :
-  #   - +opts+ -> the hash of options.
-  #     [comment] the option/value delimiter.
-  #     [default] name of the default section.
+  # @param opts [Hash] the hash of options.
+  # @option opts [String] :delimiter ('=') the option/value delimiter.
+  # @option opts [String] :default ('Default') name of the default section.
   def initialize(opts = {})
     @delimiter = opts.fetch(:delimiter, '=')
     @default_section = opts.fetch(:default, 'Default')
@@ -29,20 +28,16 @@ class INIConfig
 
   # Returns the list of sections.
   #
-  # * *Returns* :
-  #   - the list of sections.
+  # @return [Array] the list of sections.
   def sections
     @conf.keys()
   end
 
   # Returns the list of options in the specified section.
   #
-  # * *Args*    :
-  #   - +section+ -> section name.
-  # * *Returns* :
-  #   - the list of options in the specified section.
-  # * *Raises* :
-  #   - +INIError+ -> if the section does not exist.
+  # @param section [String,Symbol] section name.
+  # @return [Array] the list of options in the specified section.
+  # @raise [INIError] if the section does not exist.
   def options(section)
     if has_section?(section)
       return @conf[section].keys()
@@ -53,23 +48,18 @@ class INIConfig
 
   # Tests the existence of a section in the configuration.
   #
-  # * *Args*    :
-  #   - +section+ -> section name.
-  # * *Returns* :
-  #   - true if the section exist, otherwise false.
+  # @param section [String,Symbol] section name.
+  # @return [Boolean] true if the section exist, otherwise false.
   def has_section?(section)
     @conf.has_key?(section)
   end
 
   # Tests the existence of an option in a section of the configuration.
   #
-  # * *Args*    :
-  #   - +section+ -> section name.
-  #   - +option+  -> option name.
-  # * *Returns* :
-  #   - true if the option exist in the section, otherwise false.
-  # * *Raises* :
-  #   - +INIError+ -> if the section does not exist.
+  # @param section [String,Symbol] section name.
+  # @param option  [String,Symbol] option name.
+  # @return [Boolean] true if the option exist in the section, otherwise false.
+  # @raise [INIError] if the section does not exist.
   def has_option?(section, option)
     if has_section?(section)
       @conf[section].has_key?(option)
@@ -80,13 +70,10 @@ class INIConfig
 
   # Returns the value associated to the option.
   #
-  # * *Args*    :
-  #   - +section+ -> section name.
-  #   - +option+  -> option name.
-  # * *Returns* :
-  #   - the value associated to the option.
-  # * *Raises* :
-  #   - +INIError+ -> if the section and/or the item does not exist.
+  # @param section [String,Symbol] section name.
+  # @param option  [String,Symbol] option name.
+  # @return [String] the value associated to the option.
+  # @raise [INIError] if the section and/or the item does not exist.
   def [](section, option)
     if has_option?(section, option)
       @conf[section][option]
@@ -98,12 +85,10 @@ class INIConfig
 
   # Set the value of the option.
   #
-  # * *Args*    :
-  #   - +section+ -> section name.
-  #   - +option+  -> option name.
-  #   - +value+   -> new value.
-  # * *Raises* :
-  #   - +INIError+ -> if the section and/or the item does not exist.
+  # @param section [String,Symbol] section name.
+  # @param option  [String,Symbol] option name.
+  # @param value   [#to_s] new value.
+  # @raise [INIError] if the section and/or the item does not exist.
   def []=(section, option, value)
     if has_option?(section, option)
       @conf[section][option] = value
@@ -115,10 +100,8 @@ class INIConfig
 
   # Adds a section to the configuration.
   #
-  # * *Args*    :
-  #   - +section+ -> section name.
-  # * *Raises* :
-  #   - +INIError+ -> if the section already exists.
+  # @param section [String,Symbol] section name.
+  # @raise [INIError] if the section already exists.
   def add_section(section)
     if has_section?(section)
       fail INIError.new("Section '#{section}' already exist.")
@@ -129,13 +112,11 @@ class INIConfig
 
   # Adds an option to the section of a configuration.
   #
-  # * *Args*    :
-  #   - +section+ -> section name.
-  #   - +option+  -> option name.
-  #   - +value+   -> option value.
-  # * *Raises* :
-  #   - +INIError+ -> if the section does not exist or if the section
-  #   already contains an option with the same name.
+  # @param section [String,Symbol] section name.
+  # @param option  [String,Symbol] option name.
+  # @param value   [#to_s]         option value.
+  # @raise [INIError] if the section does not exist or if the section already
+  #                   contains an option with the same name.
   def add_option(section, option, value)
     if has_option?(section, option)
       fail INIError.new("Option '#{option}' already exist " <<
@@ -147,10 +128,8 @@ class INIConfig
 
   # Removes a section from the configuration.
   #
-  # * *Args*    :
-  #   - +section+ -> name of the section to delete.
-  # * *Raises* :
-  #   - +INIError+ -> if the section does not exist.
+  # @param section [String,Symbol] name of the section to delete.
+  # @raise [INIError] if the section does not exist.
   def delete_section(section)
     if has_section?(section)
       @conf[section].clear()
@@ -162,12 +141,11 @@ class INIConfig
 
   # Removes an option from a section of a configuration.
   #
-  # * *Args*    :
-  #   - +section+ -> name of the section containing the option to be deleted.
-  #   - +option+  -> name of the option to delete.
-  # * *Raises* :
-  #   - +INIError+ -> if the section does not exist and/or if the option does
-  #   not exist
+  # @param section [String,Symbol] name of the section containing the option to
+  #                                be deleted.
+  # @param option [String,Symbol] name of the option to delete.
+  # @raise [INIError] if the section does not exist and/or if the option does
+  #                   not exist
   def delete_option(section, option)
     if has_option?(section, option)
       @conf[section].delete(option)
@@ -179,8 +157,7 @@ class INIConfig
 
   # Returns a string representing the configuration.
   #
-  # * *Returns* :
-  #   - a string representing the configuration.
+  # @return [String] a string representing the configuration.
   def to_s
     str = ''
     @conf.each_key() do |section|
@@ -197,12 +174,11 @@ class INIConfig
 
   # Loads the content of an existing configuration file.
   #
-  # * *Args*    :
-  #   - +path+      -> file path.
-  #   - +encoding+  -> the encoding to be used on the file.
-  #   - +to_symbol+ -> convert section and option names to symbol?
-  # * *Raises* :
-  #   - +INIError+ -> if the INI-file is malformed.
+  # @param path      [String]          file path.
+  # @param encoding  [Encoding,String] the encoding to be used on the file.
+  # @param to_symbol [Boolean]         convert section and option names to
+  #                                    symbol?
+  # @raise [INIError] if the INI-file is malformed.
   def load(path, encoding = Encoding.default_external(), to_symbol = false)
     lines = IO.readlines(path, :encoding => encoding.to_s(), :mode => 'rb')
     section_name = nil
@@ -252,9 +228,8 @@ class INIConfig
 
   # Writes a configuration object into a file.
   #
-  # * *Args*    :
-  #   - +path+     -> file path.
-  #   - +encoding+ -> the encoding to be used on the file.
+  # @param path     [String]          file path.
+  # @param encoding [Encoding,String] the encoding to be used on the file.
   def save(path, encoding = Encoding.default_external())
     IO.write(path, to_s(), :encoding => encoding.to_s())
   end
@@ -263,15 +238,13 @@ private
 
   # Parses the option value.
   #
-  # * *Args*    :
-  #   - +value+    -> current value of the option.
-  #   - +iterator+ -> iterator on the lines.
-  # * *Returns* :
-  #   - the option value.
-  # * *Raises* :
-  #   - +INIError+ -> if no matching quotation mark is found before the end of
-  #   the file.
+  # @param value    [String]     current value of the option.
+  # @param iterator [Enumerator] iterator on the lines.
+  # @return [String] the option value.
+  # @raise [INIError] if no matching quotation mark is found before the end of
+  #                   the file.
   def parse_quoted_value(value, iterator)
+    print(iterator.class)
     quoted_value = ''
     quote = value[0] # Extract the quoting character.
     value.slice!(0)  # Remove the first quoting character.
@@ -301,14 +274,11 @@ private
 
   # Parses the option value.
   #
-  # * *Args*    :
-  #   - +value+    -> current value of the option.
-  #   - +iterator+ -> iterator on the lines.
-  # * *Returns* :
-  #   - the option value.
-  # * *Raises* :
-  #   - +INIError+ -> if the multiline value does not end before the end of the
-  #   file.
+  # @param value    [String]     current value of the option.
+  # @param iterator [Enumerator] iterator on the lines.
+  # @return [String] the option value.
+  # @raise [INIError] if the multiline value does not end before the end of the
+  #                   file.
   def parse_unquoted_value(value, iterator)
     full_value = ''
     # Remove trailing spaces and inline comments.

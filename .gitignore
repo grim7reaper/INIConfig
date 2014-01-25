@@ -1,2 +1,4 @@
 # Ignore documentation directory.
 doc/
+# Ignore Vim swap files.
+*.swp
